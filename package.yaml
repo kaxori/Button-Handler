@@ -1,0 +1,9 @@
+# Toit Package File.
+name: button_handler
+description: Generates different click actions from button state changes.
+environment:
+  sdk: ^2.0.0-alpha.86
+dependencies:
+  action_repeater:
+    url: github.com/kaxori/Action-Repeater
+    version: ^1.0.7

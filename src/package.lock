@@ -1,0 +1,10 @@
+prefixes:
+  actionRepeater: Action-Repeater
+  buttonHandler: ..
+packages:
+  Action-Repeater:
+    url: github.com/kaxori/Action-Repeater
+    version: 1.0.7
+    hash: 202a15c72dcb7db3c1a931e97501bb3eb6cebb5b
+  ..:
+    path: ..
