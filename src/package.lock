@@ -1,5 +1,5 @@
 prefixes:
-  actionRepeater: Action-Repeater
+  action_repeater: Action-Repeater
   buttonHandler: ..
 packages:
   Action-Repeater:
