@@ -4,7 +4,8 @@
 
 import gpio
 import gpio.pin
-import actionRepeater show *
+import action_repeater show *
+
 
 
 /**
@@ -70,6 +71,10 @@ class ButtonHandler:
         button_.wait_for 1
         buttonReleased_
 
+
+
+
+
     pressPeriod_ = ActionRepeater --timeout_ms=LONG_PRESS_PERIOD --action= ::
       ++longpressCount_
       if longPressAction_: longPressAction_.call
@@ -90,6 +95,42 @@ class ButtonHandler:
       if releaseAction_ != null: releaseAction_.call
       clickCount_ = 0
       longpressCount_ = 0
+
+
+  assignAction --clearAll /bool = false
+      --pressAction /Lambda? = null 
+      --releaseAction /Lambda? = null
+      --singleClickAction  /Lambda? = null
+      --doubleClickAction  /Lambda? = null
+      --trippleClickAction  /Lambda? = null
+      --longPressAction /Lambda? = null
+    :
+
+    if clearAll:
+      pressAction_ = releaseAction_ = longPressAction_ = \
+        singleClickAction_ = doubleClickAction_ = trippleClickAction_ = null
+
+    if pressAction != null:
+      pressAction_ = pressAction 
+  
+    if releaseAction != null:
+      releaseAction_ = releaseAction
+
+    if longPressAction != null:
+      longPressAction_ = longPressAction
+
+    if singleClickAction != null:
+      singleClickAction_ = singleClickAction
+
+    if doubleClickAction != null:
+      doubleClickAction_ = doubleClickAction
+
+    if trippleClickAction != null:
+      trippleClickAction_ = trippleClickAction
+
+
+
+
 
 
   buttonPressed_:
