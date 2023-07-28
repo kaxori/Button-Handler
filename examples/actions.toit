@@ -1,7 +1,7 @@
 /**
 A simple example to show the usage of the ButtonHandler.
 
-
+uses a list of actions (callback lambda functions)
 */
 import gpio
 import ..src.button_handler show *
@@ -13,6 +13,37 @@ GPIO_LED_GREEN ::= 32    // LED used to indicate clicks, long press
 GPIO_BUTTON ::= 4       // Push button (low active)
 
 
+testActionPushPop bh /ButtonHandler led:
+
+  print "action push/pop test"
+
+  doTest := true
+
+  bh.assignAction --clearAll=true
+
+    --pressAction= :: led.set 1
+    --releaseAction= :: led.set 0
+    --longPressAction= :: 
+      print "LONG"
+      task ::
+        3.repeat:
+          led.set 1
+          sleep --ms=20
+          led.set 0
+          sleep --ms=30
+        sleep --ms=20
+
+    --singleClickAction = :: print "click 1"
+    --doubleClickAction = ::  print "click 2"
+    --trippleClickAction = :: print "click 3"
+//
+
+  while doTest:
+    sleep --ms=1000
+
+
+
+
 blink --led/gpio.Pin --nTimes/int :
   task ::
     nTimes.repeat:
@@ -20,6 +51,9 @@ blink --led/gpio.Pin --nTimes/int :
       sleep --ms=200
       led.set 0
       sleep --ms=300
+
+
+
 
 main:
 //  net.open
@@ -30,7 +64,11 @@ main:
   led2 := gpio.Pin GPIO_LED_GREEN --output
   pushButton := gpio.Pin GPIO_BUTTON --input --pull_up
 
+  longCount := 0
   doHwTest := true
+
+  defaultActions := ButtonHandlerActions
+
   buttonHandler := ButtonHandler pushButton
     --singleClickAction= :: 
       print "CLICK"
@@ -43,10 +81,11 @@ main:
     --trippleClickAction= :: 
       print "CLICK-CLICK-CLICK"
       blink --led=led2 --nTimes=3
-      doHwTest = false
+      //doHwTest = false
 
     --pressAction= :: led.set 1
-    --releaseAction= :: led.set 0
+
+    --releaseAction= :: led.set 0; longCount = 0
     --longPressAction= :: 
       print "LONG"
       task ::
@@ -56,19 +95,27 @@ main:
           led2.set 0
           sleep --ms=30
         sleep --ms=20
+        if ++longCount >= 5: 
+          print "exit"
+          doHwTest = false
 
   print "HW test - tripple click to exit"
 
 
   while doHwTest:
     sleep --ms=1000
+  
+
+  print "exiting"
+  testActionPushPop buttonHandler led
+
 
   print "reassign actions"
   buttonHandler.assignAction --clearAll=true
     //--pressAction = null
     //--releaseAction = null
     //--singleClickAction = :: print "click"
-    //--doubleClickAction = :: print "click 2"
+    --doubleClickAction = :: testActionPushPop buttonHandler led
     --trippleClickAction = :: 
       print "click 3"
       blink --led=led --nTimes=3

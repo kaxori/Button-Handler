@@ -6,4 +6,4 @@ environment:
 dependencies:
   action_repeater:
     url: github.com/kaxori/Action-Repeater
-    version: ^1.0.8
+    version: ^1.0.11
