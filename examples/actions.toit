@@ -4,7 +4,7 @@ A simple example to show the usage of the ButtonHandler.
 uses a list of actions (callback lambda functions)
 */
 import gpio
-import ..src.button_handler show *
+import button-handler show *
 
 
 // GPIO ports of ESP32 prototype
@@ -23,7 +23,7 @@ testActionPushPop bh /ButtonHandler led:
 
     --pressAction= :: led.set 1
     --releaseAction= :: led.set 0
-    --longPressAction= :: 
+    --longPressAction= ::
       print "LONG"
       task ::
         3.repeat:
@@ -58,7 +58,7 @@ blink --led/gpio.Pin --nTimes/int :
 main:
 //  net.open
   print "\n\nTest ButtonHandler , action reassign\n"
-    
+
   // IO initialisation
   led := gpio.Pin GPIO_LED_RED --output
   led2 := gpio.Pin GPIO_LED_GREEN --output
@@ -67,18 +67,19 @@ main:
   longCount := 0
   doHwTest := true
 
-  defaultActions := ButtonHandlerActions
+  // TODO:
+  // defaultActions := ButtonHandlerActions
 
   buttonHandler := ButtonHandler pushButton
-    --singleClickAction= :: 
+    --singleClickAction= ::
       print "CLICK"
       blink --led=led2 --nTimes=1
 
-    --doubleClickAction= :: 
+    --doubleClickAction= ::
       print "CLICK-CLICK"
       blink --led=led2 --nTimes=2
 
-    --trippleClickAction= :: 
+    --trippleClickAction= ::
       print "CLICK-CLICK-CLICK"
       blink --led=led2 --nTimes=3
       //doHwTest = false
@@ -86,7 +87,7 @@ main:
     --pressAction= :: led.set 1
 
     --releaseAction= :: led.set 0; longCount = 0
-    --longPressAction= :: 
+    --longPressAction= ::
       print "LONG"
       task ::
         3.repeat:
@@ -95,7 +96,7 @@ main:
           led2.set 0
           sleep --ms=30
         sleep --ms=20
-        if ++longCount >= 5: 
+        if ++longCount >= 5:
           print "exit"
           doHwTest = false
 
@@ -104,7 +105,7 @@ main:
 
   while doHwTest:
     sleep --ms=1000
-  
+
 
   print "exiting"
   testActionPushPop buttonHandler led
@@ -116,7 +117,7 @@ main:
     //--releaseAction = null
     //--singleClickAction = :: print "click"
     --doubleClickAction = :: testActionPushPop buttonHandler led
-    --trippleClickAction = :: 
+    --trippleClickAction = ::
       print "click 3"
       blink --led=led --nTimes=3
 
