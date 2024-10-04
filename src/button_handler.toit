@@ -8,7 +8,7 @@ import gpio.pin
 import action_repeater show *
 
 
-/**
+/*
 ==> TODO
 
 class ButtonHandlerActions:
@@ -24,8 +24,8 @@ class ButtonHandlerActions:
   static SIZE_ACTIONS ::= 6
 
 
-  constructor 
-      --pressAction /Lambda? = null 
+  constructor
+      --pressAction /Lambda? = null
       --releaseAction /Lambda? = null
       --longPressAction /Lambda? = null
       --singleClickAction  /Lambda? = null
@@ -63,7 +63,7 @@ class ButtonHandlerActions:
 ButtonHandler
 Analyses button events and calls defined user code.
 
-- 
+-
 */
 class ButtonHandler:
   static LONG_PRESS_PERIOD ::= 500
@@ -76,7 +76,7 @@ class ButtonHandler:
   doubleClickAction_ /Lambda? := null
   trippleClickAction_ /Lambda? := null
   longPressAction_ /Lambda? := null
-  
+
   handler_ /Task? := null
 
   pressPeriod_ /ActionRepeater? := null
@@ -90,9 +90,9 @@ class ButtonHandler:
 
 
 
-  
-  constructor .button_/gpio.Pin 
-      --pressAction /Lambda? = null 
+
+  constructor .button_/gpio.Pin
+      --pressAction /Lambda? = null
       --releaseAction /Lambda? = null
       --singleClickAction  /Lambda? = null
       --doubleClickAction  /Lambda? = null
@@ -106,8 +106,8 @@ class ButtonHandler:
     label_ = label
 
     if pressAction != null:
-      pressAction_ = pressAction 
-  
+      pressAction_ = pressAction
+
     if releaseAction != null:
       releaseAction_ = releaseAction
 
@@ -168,7 +168,7 @@ class ButtonHandler:
   Re-Assigns actions to button events. Optionally all previously registered action are cleared.
   */
   assignAction --clearAll /bool = false
-      --pressAction /Lambda? = null 
+      --pressAction /Lambda? = null
       --releaseAction /Lambda? = null
       --singleClickAction  /Lambda? = null
       --doubleClickAction  /Lambda? = null
@@ -183,8 +183,8 @@ class ButtonHandler:
       logger_.debug "$label_: all actions cleared"
 
     if pressAction != null:
-      pressAction_ = pressAction 
-  
+      pressAction_ = pressAction
+
     if releaseAction != null:
       releaseAction_ = releaseAction
 
@@ -202,7 +202,7 @@ class ButtonHandler:
 
 
   //assignActions actions /ButtonHandlerActions:
-    
+
 
 
   /**
