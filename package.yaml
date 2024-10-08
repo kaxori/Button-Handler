@@ -5,5 +5,5 @@ environment:
   sdk: ^2.0.0-alpha.86
 dependencies:
   action_repeater:
-    url: github.com/kaxori/Action-Repeater
+    url: github.com/kaxori/action-repeater
     version: ^1.0.11

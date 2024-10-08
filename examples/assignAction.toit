@@ -4,7 +4,7 @@ A simple example to show the usage of the ButtonHandler.
 
 */
 import gpio
-import ..src.button_handler show *
+import button-handler show *
 
 
 // GPIO ports of ESP32 prototype
@@ -24,7 +24,7 @@ blink --led/gpio.Pin --nTimes/int :
 main:
 //  net.open
   print "\n\nTest ButtonHandler , action reassign\n"
-    
+
   // IO initialisation
   led := gpio.Pin GPIO_LED_RED --output
   led2 := gpio.Pin GPIO_LED_GREEN --output
@@ -32,22 +32,22 @@ main:
 
   doHwTest := true
   buttonHandler := ButtonHandler pushButton
-    --singleClickAction= :: 
+    --singleClickAction= ::
       print "CLICK"
       blink --led=led2 --nTimes=1
 
-    --doubleClickAction= :: 
+    --doubleClickAction= ::
       print "CLICK-CLICK"
       blink --led=led2 --nTimes=2
 
-    --trippleClickAction= :: 
+    --trippleClickAction= ::
       print "CLICK-CLICK-CLICK"
       blink --led=led2 --nTimes=3
       doHwTest = false
 
     --pressAction= :: led.set 1
     --releaseAction= :: led.set 0
-    --longPressAction= :: 
+    --longPressAction= ::
       print "LONG"
       task ::
         3.repeat:
@@ -69,7 +69,7 @@ main:
     //--releaseAction = null
     //--singleClickAction = :: print "click"
     //--doubleClickAction = :: print "click 2"
-    --trippleClickAction = :: 
+    --trippleClickAction = ::
       print "click 3"
       blink --led=led --nTimes=3
 
