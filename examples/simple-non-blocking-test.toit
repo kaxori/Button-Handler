@@ -1,6 +1,6 @@
 /**
   Example in non blocking mode. 
-  While waiting execution of main task is blocked.
+  While main task is in the event loop the button service task runs asynchronously to detect button events.
 */
 
 import .hw-c3-super-mini

@@ -1,7 +1,6 @@
 /**
   Example in blocking mode. While waiting execution of main task is blocked.
 */
-
 import .hw-c3-super-mini
 import button_handler show *
 
