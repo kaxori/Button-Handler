@@ -1,6 +1,8 @@
 # Button_Handler
 
-Generates different click actions from button state changes.
+V2.0.0
+  - Supports blocking and non-blocking mode.
+  - Dependency to action-repeater removed.
 
 ## Install
 ```
@@ -9,19 +11,7 @@ jag pkg install button_handler
 
 ## examples 
 
-A simple usage example.
-``` toit
-import gpio
-import buttonHandler show *
-
-main:
-  pushButton := gpio.Pin GPIO_BUTTON --input --pull_up
-  buttonHandler := ButtonHandler pushButton
-    --singleClickAction= :: 
-      print "CLICK"
-  ...
-```
-See the `examples` folder for more examples.
+See the `examples` folder for examples.
 
 ## Features and bugs
 
