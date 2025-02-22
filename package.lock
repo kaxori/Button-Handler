@@ -1,9 +1,0 @@
-sdk: ^2.0.0-alpha.86
-prefixes:
-  action_repeater: action-repeater
-packages:
-  action-repeater:
-    url: github.com/kaxori/action-repeater
-    name: action_repeater
-    version: 1.0.12
-    hash: d3cc5fb2def122fc3330ab09d39fc3a612506d20

@@ -1,13 +1,30 @@
-import .button-handler
+import .blocking
 import log
 
 
+/**
+ButtonService provides non blocking button handling.
+After the button service is started, the actions of the detected button events are called 
+(lambda callbacks).
+
+# Example:
+  button := ButtonService --gpio=GPIO-ONBOARD-BOOT-BUTTON --low-active
+
+  button.start-service
+  button.set-press-action :: print "PRESS"
+  button.set-release-action :: print "RELEASE"
+
+  // event loop: button service calls the defined actions
+  30.repeat: 
+    sleep --ms=1_000
+
+  button.stop-service
+*/
 class ButtonService :
 
   static DEBUG ::= false
   static LONG-PRESS-PERIOD ::= Duration --ms=1_000
   static CLICK-END-PERIOD ::= Duration --ms=400
-
 
   logger_ /log.Logger
   button /ButtonHandler
@@ -16,14 +33,15 @@ class ButtonService :
   press-action /Lambda? := null
   release-action /Lambda? := null
   long-press-action /Lambda? := null
-
   single-click-action /Lambda? := null
   double-click-action /Lambda? := null
   tripple-click-action /Lambda? := null
   many-click-action /Lambda? := null
 
-
-
+  /**
+  Constructs an instance of ButtonService.
+  Uses ButtonHandler for basic button IO functions.
+  */
   constructor --gpio 
       --debounce-ms/int=null
       --low_active=null
@@ -42,33 +60,38 @@ class ButtonService :
       """
     else: print "ButtonService: DEBUG off"
 
-
+  /** Enables action for detected button press. */
   set-press-action action/Lambda? = null: 
     press-action = action 
     log_ "press-action: $press-action"
 
+  /** Enables action for detected button release. */
   set-release-action action/Lambda? = null: 
     release-action = action
     log_ "release-action: $press-action"
 
+  /** Enables action for detected long button press. */
   set-long-press-action  action/Lambda? = null: 
     long-press-action = action
     log_ "long-press-action: $press-action"
 
 
+  /** Enables action for detected single button click. */
   set-single-click-action action/Lambda? = null: 
     single-click-action = action
     log_ "single-click-action: $press-action"
 
+  /** Enables action for detected double button click. */
   set-double-click-action action/Lambda? = null: 
     double-click-action = action
     log_ "double-click-action: $press-action"
 
+  /** Enables action for detected many button click. */
   set-many-click-action action/Lambda? = null: 
     many-click-action = action
     log_ "many-click-action: $press-action"
 
-
+  /** Clear all actions. */
   clear-all-actions:
     press-action = release-action = long-press-action = \
     single-click-action = double-click-action = tripple-click-action = \
@@ -77,11 +100,12 @@ class ButtonService :
 
   
 
-
+  /** Return true if service is running. */
   is-service-running -> bool:
     return service != null
 
-  start:
+  /** Starts the button service task. */
+  start-service:
     if service != null: service.cancel
     /*log_ """
       press-action: $press-action
@@ -128,10 +152,10 @@ class ButtonService :
             break
 
           break // to state (0)
-
     log_ "service started"
 
 
+  /** Stops the button service task. */
   stop-service:
     if service != null: 
       service.cancel

@@ -1,32 +1,23 @@
-
-/**
-
-button press:
-button release:
-button click:
-
-*/
 import log
 import gpio show *
-
 import esp32
-//import .button_service
 
 
 /**
-ButtonHandler
-Analyses button events and calls defined user code.
-- 
+ButtonHandler provides blocking button handling.
+While waiting for a button event the execution of main task is blocked.
+
+#Example:
+  button := ButtonHandler --gpio=GPIO-ONBOARD-BOOT-BUTTON --low-active
+  button.wait-for-press
+  ...
+  button.wait-for-release
+  ...
 */
 class ButtonHandler:
 
   static DEBUG /bool ::= false
-  
-  static ENDLESS /int ::= 0
-  static DEBOUNCE-PERIOD-MS /int ::= 20       // 
-  static CLICK-END-PERIOD-MS /int ::= 400     // adapt this value to pressing speed: higher value allow slower clicks
-  static LONG-PRESS-PERIOD-MS /int ::= 1000   // long press event after this press period
-
+  static DEBOUNCE-PERIOD-MS /int ::= 20
 
   gpio := ?
   debounce-ms /int
@@ -35,7 +26,7 @@ class ButtonHandler:
   logger_ /log.Logger
 
 
-
+  /** Constructs an instance of ButtonHandler. */
   constructor 
       --.gpio 
       --.debounce-ms/int=DEBOUNCE-PERIOD-MS
@@ -62,21 +53,16 @@ class ButtonHandler:
 
 
 
-
-  /*
-    MotionSensor is unkown by default
-    a polling handler task handles state changes
-    if it caused wakeup than trigger changes state to activated
-  */
+  /** Returns true if the button is pressed (activated). */
   is-pressed -> bool:
     button-is-pressed := is_low_active ? pin.get == 0 : pin.get == 1
     log_ "button-is-pressed: $button-is-pressed"
     return button-is-pressed
 
 
-  /**
-  Waits until the button is pressed.
-    If 
+  /** 
+  Waits until the button is pressed and returns the duration of the waiting time.
+    The waiting is limited, if an optional timeout is specyfied.
   */
   wait-for-press --timeout/Duration?=null -> Duration:
     log_ "wait for button press .."
@@ -87,11 +73,12 @@ class ButtonHandler:
     if e:  log_ "timeout"
     return Duration --us=(esp32.total-run-time - start_)
 
-
+  /** 
+  Waits until the button is released and returns the duration of the waiting time.
+    The waiting is limited, if an optional timeout is specyfied.
+  */
   wait-for-release --timeout/Duration?=null -> Duration:
     log_ "wait for button release .."
-    //wait-for-deactivation_; log_ "released" 
-
     start_ := esp32.total-run-time
     e := catch: 
       with-timeout timeout:
@@ -102,7 +89,8 @@ class ButtonHandler:
 
 
   /** 
-  Wait for complete press/release cycle. 
+  Waits for complete click (i.e. press/release cycle) and returns the duration of the waiting time.
+    The waiting is limited, if an optional timeout is specyfied.
   */
   wait-for-click --timeout/Duration?=null -> Duration:
     log_ "wait for click"
@@ -128,12 +116,12 @@ class ButtonHandler:
   debounce_: 
     sleep --ms=debounce-ms
 
-  /** wait until the button is pressed. */
+  /** Wait until the button is pressed including debounce. */
   wait-for-activation_: 
     pin.wait_for (is-low-active ? 0 : 1)
     debounce_
 
-  /** wait until the button is released. */
+  /** wait until the button is released including debounce. */
   wait-for-deactivation_: 
     pin.wait_for (is-low-active ? 1 : 0)
     debounce_
