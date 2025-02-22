@@ -1,5 +1,19 @@
+<<<<<<< HEAD
+=======
+sdk: ^2.0.0-alpha.86
+>>>>>>> 1ff018a03ed47560f86a35bb18517c209fb51868
 prefixes:
   button_handler: ..
 packages:
   ..:
     path: ..
+<<<<<<< HEAD
+=======
+    prefixes:
+      action_repeater: action-repeater
+  action-repeater:
+    url: github.com/kaxori/action-repeater
+    name: action_repeater
+    version: 1.0.12
+    hash: d3cc5fb2def122fc3330ab09d39fc3a612506d20
+>>>>>>> 1ff018a03ed47560f86a35bb18517c209fb51868
