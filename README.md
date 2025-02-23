@@ -4,6 +4,11 @@ V2.0.0
   - Supports blocking and non-blocking mode.
   - Dependency to action-repeater removed.
 
+  - generated button events :
+![alt text](time.png)
+  - internal states:
+![alt text](state.png)
+
 ## Install
 ```
 jag pkg install button_handler
